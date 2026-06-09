@@ -41,17 +41,18 @@ public class AbroadCourse {
     public String getDiplom() { return diplom; }
     public void setDiplom(String diplom) { this.diplom = diplom; }
 
-  public void printCourse() {
-      System.out.println( "AbroadCourse{" +
-          "university='" + university + "'" +
-          ", city='" + city + "'" +
-          ", country='" + country + "'" +
-          ", courseId=" + courseId +
-          ", courseName='" + courseName + "'" +
-          ", erasmusID=" + erasmusID +
-          ", ects=" + ects +
-          ", courseURL='" + courseURL + "'" +
-          ", diplom='" + diplom + "'" +
-          "}"); 
-  }
+    @Override
+    public String toString() {
+        return "AbroadCourse{" +
+            "university='" + university + "'" +
+            ", city='" + city + "'" +
+            ", country='" + country + "'" +
+            ", courseId=" + courseId +
+            ", courseName='" + courseName + "'" +
+            ", erasmusID=" + erasmusID +
+            ", ects=" + ects +
+            ", courseURL='" + courseURL + "'" +
+            ", diplom='" + diplom + "'" +
+            "}";
+    }
 }

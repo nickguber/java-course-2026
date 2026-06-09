@@ -19,7 +19,7 @@ public class StudentFormController {
     public String showForm(Model model) {
         model.addAttribute("course", new AbroadCourse());
         model.addAttribute("courses", courses);
-        return "course-form";
+        return "studentform";
     }
 
     @PostMapping("/courses")
