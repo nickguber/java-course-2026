@@ -25,6 +25,7 @@ public class StudentFormController {
     @PostMapping("/courses")
     public String saveCourse(@ModelAttribute AbroadCourse course) {
         courses.add(course);
+        System.out.println(courses);
         return "redirect:/courses";
     }
-}
+} 
