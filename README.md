@@ -1,35 +1,54 @@
 # Java Course Group 1
 
-GUI built in Swing, polished with FlatLaf for a modern look.
+Web app built with Spring Boot and Thymeleaf, styled with Tailwind CSS.
 
 ## Purpose
-Collect information from students who studied abroad for one or multiple semesters.
+Collect information from students who studied abroad for one or multiple semesters via a web form hosted on the Humboldt University website.
+
+## Tech Stack
+- **Backend:** Java 17, Spring Boot 3.3
+- **Templates:** Thymeleaf
+- **Styling:** Tailwind CSS (CDN)
+- **Build:** Maven Wrapper (no Maven installation required)
 
 ## Project Structure
 
 ```
-src/com/studyabroad/
-├── Main.java              ← entry point, launches the GUI
-├── gui/
-│   └── StudentForm.java   ← collects input, builds the student object, triggers output
-├── model/
-│   └── AbroadStudent.java ← plain Java object holding one student's data
-└── business/
-    └── ExcelWriter.java   ← receives the student object and writes it to Excel (V2)
+src/main/
+├── java/com/studyabroad/
+│   ├── Main.java                          ← entry point (@SpringBootApplication)
+│   ├── controller/
+│   │   └── StudentFormController.java     ← handles form GET/POST requests
+│   ├── model/
+│   │   └── AbroadStudent.java             ← Java object holding one student's data
+│   └── business/
+│       └── ExcelWriter.java               ← receives student object, writes to Excel (V2)
+└── resources/
+    └── templates/
+        └── studentform.html               ← Thymeleaf form template with Tailwind CSS
 ```
+
+## Run Locally
+
+```bash
+./mvnw spring-boot:run
+```
+
+Then open [http://localhost:8080](http://localhost:8080) in your browser. No Maven installation needed.
 
 ## Application Flow
 
 ### V1
-1. `Main.java` starts the app and opens `StudentForm`
-2. The student fills in the form fields and clicks Submit
-3. `StudentForm` reads the field values and constructs a new `AbroadStudent` object
-4. The student data is printed to the console for verification
+1. User opens the form in the browser
+2. `StudentFormController` serves `studentform.html`
+3. User fills in the fields and clicks Submit
+4. Controller maps the form data to a new `AbroadStudent` object
+5. Data is printed to the console for verification
 
 ### V2
-Steps 1–3 stay identical. Step 4 changes:
+Steps 1–4 stay identical. Step 5 changes:
 
-4. `StudentForm` passes the `AbroadStudent` object to `ExcelWriter`
-5. `ExcelWriter` reads the object's fields and inserts them into an Excel file
+5. `StudentFormController` passes the `AbroadStudent` object to `ExcelWriter`
+6. `ExcelWriter` reads the object's fields and inserts them into an Excel file
 
-The form never writes to Excel directly — it only hands off the finished object.
+The controller never writes to Excel directly — it only hands off the finished object.
