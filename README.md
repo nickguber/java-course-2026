@@ -48,6 +48,8 @@ src/main/
 
 Then open [http://localhost:8080/courses](http://localhost:8080/courses) in your browser. No Maven installation needed.
 
+Write something into the form inputs. Click submit. Check the logs in your terminal => you'll see the instance in the logs. Later on we'll insert this into excel.
+
 ## Application Flow
 
 ### V1
