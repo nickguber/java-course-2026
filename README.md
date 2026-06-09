@@ -2,6 +2,18 @@
 
 Web app built with Spring Boot and Thymeleaf, styled with Tailwind CSS.
 
+
+Current state of the project: 
+Implemented: 
+- Simple HTML form tracked by thymeleaf. 
+- Simple Controller inserting the form elements into the courses object. 
+- Simple AbroadCourse Java Class, the blueprint for our form. 
+
+Next steps: 
+- Write an excel writer class submitting the course input into the excel database. 
+- Implement error handling in the setter methods of AbroadCourse class. 
+- Replace the println in the controller with the actual excel writer class. 
+
 ## Purpose
 Collect information from students who studied abroad for one or multiple semesters via a web form hosted on the Humboldt University website.
 
@@ -34,7 +46,7 @@ src/main/
 ./mvnw spring-boot:run
 ```
 
-Then open [http://localhost:8080](http://localhost:8080) in your browser. No Maven installation needed.
+Then open [http://localhost:8080/courses](http://localhost:8080/courses) in your browser. No Maven installation needed.
 
 ## Application Flow
 
