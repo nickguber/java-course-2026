@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Study Abroad Course Form</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style type="text/tailwindcss">
+        @layer components {
+            .form-label {
+                @apply block text-sm font-medium text-gray-700 mb-1;
+            }
+            .form-input {
+                @apply border border-gray-300 rounded px-3 py-2 w-full focus:outline-none focus:ring-2 focus:ring-blue-500;
+            }
+            .form-group {
+                @apply flex flex-col;
+            }
+        }
+    </style>
+</head>
+<body class="bg-gray-100 min-h-screen flex items-center justify-center">
+
+    <div class="bg-white rounded-lg shadow-md p-8 w-full max-w-lg">
+        <h1 class="text-2xl font-bold text-gray-800 mb-6">Study Abroad Course</h1>
+
+        <form th:action="@{/courses}" th:object="${course}" method="post" class="flex flex-col gap-4">
+
+            <div class="form-group">
+                <label class="form-label">University</label>
+                <input class="form-input" type="text" th:field="*{university}" placeholder="Humboldt University" />
+            </div>
+
+            <div class="form-group">
+                <label class="form-label">City</label>
+                <input class="form-input" type="text" th:field="*{city}" placeholder="Berlin" />
+            </div>
+
+            <div class="form-group">
+                <label class="form-label">Country</label>
+                <input class="form-input" type="text" th:field="*{country}" placeholder="Germany" />
+            </div>
+
+            <div class="form-group">
+                <label class="form-label">Course ID</label>
+                <input class="form-input" type="number" th:field="*{courseId}" placeholder="12345" />
+            </div>
+
+            <div class="form-group">
+                <label class="form-label">Course Name</label>
+                <input class="form-input" type="text" th:field="*{courseName}" placeholder="Introduction to Computer Science" />
+            </div>
+
+            <div class="form-group">
+                <label class="form-label">Erasmus ID</label>
+                <input class="form-input" type="number" th:field="*{erasmusID}" placeholder="67890" />
+            </div>
+
+            <div class="form-group">
+                <label class="form-label">ECTS</label>
+                <input class="form-input" type="number" th:field="*{ects}" placeholder="6" />
+            </div>
+
+            <div class="form-group">
+                <label class="form-label">Course URL</label>
+                <input class="form-input" type="text" th:field="*{courseURL}" placeholder="https://university.edu/course" />
+            </div>
+
+            <div class="form-group">
+                <label class="form-label">Diploma</label>
+                <input class="form-input" type="text" th:field="*{diplom}" placeholder="Bachelor of Science" />
+            </div>
+
+            <button class="mt-2 bg-blue-600 text-white font-medium py-2 rounded hover:bg-blue-700 transition" type="submit">
+                Save Course
+            </button>
+
+        </form>
+    </div>
+
+</body>
+</html>
