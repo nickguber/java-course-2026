@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Study Abroad Course Form</title>
+    <title>Auslandsstudium – Humboldt-Universität zu Berlin</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style type="text/tailwindcss">
         @layer components {
@@ -11,7 +11,7 @@
                 @apply block text-sm font-medium text-gray-700 mb-1;
             }
             .form-input {
-                @apply border border-gray-300 rounded px-3 py-2 w-full focus:outline-none focus:ring-2 focus:ring-blue-500;
+                @apply border border-gray-300 rounded px-3 py-2 w-full focus:outline-none focus:ring-2 focus:ring-[#165096] text-sm;
             }
             .form-group {
                 @apply flex flex-col;
@@ -19,70 +19,104 @@
         }
     </style>
 </head>
-<body class="bg-gray-100 min-h-screen flex items-center justify-center">
+<body class="bg-gray-100 min-h-screen flex flex-col">
 
-    <div class="bg-white rounded-lg shadow-md p-8 w-full max-w-lg">
-        <h1 class="text-2xl font-bold text-gray-800 mb-6">Study Abroad Course</h1>
-
-        <form th:action="@{/courses}" th:object="${course}" method="post" class="flex flex-col gap-4">
-
-            <div class="form-group">
-                <label class="form-label">University</label>
-                <input class="form-input" type="text" th:field="*{university}" placeholder="Humboldt University" required />
+    <!-- Header -->
+    <header class="bg-[#165096] text-white">
+        <div class="max-w-5xl mx-auto px-6 py-4 flex items-center gap-4">
+            <img th:src="@{/Huberlin-logo.svg}" alt="HU Berlin Logo" class="h-14 w-14" />
+            <div>
+                <div class="text-xs uppercase tracking-widest text-blue-200">Humboldt-Universität zu Berlin</div>
+                <div class="text-lg font-semibold">Auslandsstudium – Kurserfassung</div>
             </div>
-
-            <div class="form-group">
-                <label class="form-label">City</label>
-                <input class="form-input" type="text" th:field="*{city}" placeholder="Berlin" required />
-            </div>
-
-            <div class="form-group">
-                <label class="form-label">Country</label>
-                <input class="form-input" type="text" th:field="*{country}" placeholder="Germany" required />
-            </div>
-
-            <div class="form-group">
-                <label class="form-label">Course ID</label>
-                <input class="form-input" type="number" th:field="*{courseId}" placeholder="12345" required />
-            </div>
-
-            <div class="form-group">
-                <label class="form-label">Course Name</label>
-                <input class="form-input" type="text" th:field="*{courseName}" placeholder="Introduction to Computer Science" required />
-            </div>
-
-            <div class="form-group">
-                <label class="form-label">Erasmus ID <span class="text-gray-400 text-xs">(optional)</span></label>
-                <input class="form-input" type="number" th:field="*{erasmusID}" placeholder="67890" />
-            </div>
-
-            <div class="form-group">
-                <label class="form-label">ECTS</label>
-                <input class="form-input" type="number" th:field="*{ects}" placeholder="6" required />
-            </div>
-
-            <div class="form-group">
-                <label class="form-label">Course URL</label>
-                <input class="form-input" type="text" th:field="*{courseURL}" placeholder="https://university.edu/course" required />
-            </div>
-
-            <div class="form-group">
-                <label class="form-label">Diploma</label>
-                <input class="form-input" type="text" th:field="*{diplom}" placeholder="Bachelor of Science" required />
-            </div>
-
-            <button class="mt-2 bg-blue-600 text-white font-medium py-2 rounded hover:bg-blue-700 transition" type="submit">
-                Save Course
-            </button>
-
-        </form>
-         <div th:if="${param.success}" class="mb-4 px-4 py-3 rounded bg-green-100 text-green-800 text-sm">
-            Course saved successfully.
         </div>
-        <div th:if="${param.error}" class="mb-4 px-4 py-3 rounded bg-red-100 text-red-800 text-sm">
-            Unexpected error happened. 
+    </header>
+
+    <!-- Breadcrumb -->
+    <div class="bg-white border-b border-gray-200">
+        <div class="max-w-5xl mx-auto px-6 py-2 text-xs text-gray-500">
+            Startseite &rsaquo; Auslandsstudium &rsaquo; Kurs einreichen
         </div>
     </div>
+
+    <!-- Content -->
+    <main class="flex-1 max-w-5xl mx-auto px-6 py-8 w-full">
+
+        <h1 class="text-xl font-semibold text-[#165096] mb-1">Auslandskurs einreichen</h1>
+        <p class="text-sm text-gray-500 mb-6">Bitte füllen Sie alle Pflichtfelder aus. Das Erasmus-ID-Feld ist optional.</p>
+
+        <div th:if="${param.success}" class="mb-6 px-4 py-3 rounded border border-green-300 bg-green-50 text-green-800 text-sm">
+            Kurs erfolgreich gespeichert.
+        </div>
+        <div th:if="${param.error}" class="mb-6 px-4 py-3 rounded border border-red-300 bg-red-50 text-red-800 text-sm">
+            Ein Fehler ist aufgetreten. Bitte versuchen Sie es erneut.
+        </div>
+
+        <div class="bg-white border border-gray-200 rounded p-8">
+            <form th:action="@{/courses}" th:object="${course}" method="post" class="grid grid-cols-2 gap-x-6 gap-y-4">
+
+                <div class="form-group">
+                    <label class="form-label">Universität</label>
+                    <input class="form-input" type="text" th:field="*{university}" placeholder="Humboldt-Universität" required />
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Stadt</label>
+                    <input class="form-input" type="text" th:field="*{city}" placeholder="Berlin" required />
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Land</label>
+                    <input class="form-input" type="text" th:field="*{country}" placeholder="Deutschland" required />
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Kurs-ID</label>
+                    <input class="form-input" type="number" th:field="*{courseId}" placeholder="12345" required />
+                </div>
+
+                <div class="form-group col-span-2">
+                    <label class="form-label">Kursname</label>
+                    <input class="form-input" type="text" th:field="*{courseName}" placeholder="Einführung in die Informatik" required />
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Erasmus-ID <span class="text-gray-400 font-normal">(optional)</span></label>
+                    <input class="form-input" type="number" th:field="*{erasmusID}" placeholder="67890" />
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">ECTS</label>
+                    <input class="form-input" type="number" th:field="*{ects}" placeholder="6" required />
+                </div>
+
+                <div class="form-group col-span-2">
+                    <label class="form-label">Kurs-URL</label>
+                    <input class="form-input" type="text" th:field="*{courseURL}" placeholder="https://university.edu/course" required />
+                </div>
+
+                <div class="form-group col-span-2">
+                    <label class="form-label">Abschluss</label>
+                    <input class="form-input" type="text" th:field="*{diplom}" placeholder="Bachelor of Science" required />
+                </div>
+
+                <div class="col-span-2 flex justify-end pt-2">
+                    <button class="bg-[#165096] text-white text-sm font-medium px-6 py-2 rounded hover:bg-[#0e3a72] transition" type="submit">
+                        Kurs einreichen
+                    </button>
+                </div>
+
+            </form>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="border-t border-gray-200 bg-white mt-8">
+        <div class="max-w-5xl mx-auto px-6 py-4 text-xs text-gray-400 flex gap-6">
+            <span>Humboldt-Universität zu Berlin</span>
+            <span>&copy; 2026</span>
+        </div>
+    </footer>
 
 </body>
 </html>
