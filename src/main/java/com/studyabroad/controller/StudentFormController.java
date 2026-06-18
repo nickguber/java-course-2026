@@ -19,8 +19,12 @@ public class StudentFormController {
 
     @PostMapping("/courses")
     public String saveCourse(@ModelAttribute AbroadCourse course) {
-        ExcelWriter writer = new ExcelWriter(); 
-        writer.writeAbroadCourse(course);
-        return "redirect:/courses";
+        try {
+            ExcelWriter writer = new ExcelWriter();
+            writer.writeAbroadCourse(course);
+            return "redirect:/courses?success=true";
+        } catch (Exception e) {
+            return "redirect:/courses?error=true";
+        }
     }
 } 

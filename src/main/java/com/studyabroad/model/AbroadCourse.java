@@ -8,7 +8,7 @@ public class AbroadCourse {
     private String country; 
     private int courseId; 
     private String courseName; 
-    private int erasmusID; 
+    private Integer erasmusID;
     private int ects; 
     private String courseURL; 
     private String diplom; 
@@ -29,8 +29,8 @@ public class AbroadCourse {
     public String getCourseName() { return courseName; }
     public void setCourseName(String courseName) { this.courseName = courseName; }
 
-    public int getErasmusID() { return erasmusID; }
-    public void setErasmusID(int erasmusID) { this.erasmusID = erasmusID; }
+    public Integer getErasmusID() { return erasmusID; }
+    public void setErasmusID(Integer erasmusID) { this.erasmusID = erasmusID; }
 
     public int getEcts() { return ects; }
     public void setEcts(int ects) { this.ects = ects; }
