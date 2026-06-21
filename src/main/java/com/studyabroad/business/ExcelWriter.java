@@ -8,7 +8,9 @@ import java.io.FileOutputStream;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import org.springframework.stereotype.Component;
 
+@Component
 public class ExcelWriter {
 
     private static final String FILE_PATH = "src/main/java/com/studyabroad/db/abroad_course_accounting_applications.xlsx";
