@@ -6,26 +6,32 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
-
-import java.util.ArrayList;
-import java.util.List;
+import com.studyabroad.business.ExcelWriter;
+import org.springframework.beans.factory.annotation.Autowired;
 
 @Controller
 public class StudentFormController {
 
-    private List<AbroadCourse> courses = new ArrayList<>();
+    private final ExcelWriter excelWriter;
+
+    @Autowired
+    public StudentFormController(ExcelWriter excelWriter) {
+        this.excelWriter = excelWriter;
+    }
 
     @GetMapping("/courses")
     public String showForm(Model model) {
         model.addAttribute("course", new AbroadCourse());
-        model.addAttribute("courses", courses);
         return "studentform";
     }
 
     @PostMapping("/courses")
     public String saveCourse(@ModelAttribute AbroadCourse course) {
-        courses.add(course);
-        System.out.println(courses); // Call the excel writer here instead.
-        return "redirect:/courses";
+        try {
+            excelWriter.writeAbroadCourse(course);
+            return "redirect:/courses?success=true";
+        } catch (Exception e) {
+            return "redirect:/courses?error=true";
+        }
     }
 } 

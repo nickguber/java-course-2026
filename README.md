@@ -1,68 +1,94 @@
-# Java Course Group 1
+# Study Abroad Course Collector
 
-Web app built with Spring Boot and Thymeleaf, styled with Tailwind CSS.
-
-
-Current state of the project: 
-Implemented: 
-- Simple HTML form tracked by thymeleaf. 
-- Simple Controller inserting the form elements into the courses object. 
-- Simple AbroadCourse Java Class, the blueprint for our form. 
-
-Next steps: 
-- Write an excel writer class submitting the course input into the excel database. 
-- Implement error handling in the setter methods of AbroadCourse class. 
-- Replace the println in the controller with the actual excel writer class. 
-
-## Purpose
-Collect information from students who studied abroad for one or multiple semesters via a web form hosted on the Humboldt University website.
+Web app hosted at Humboldt University that collects study abroad course data from students via a web form. Submitted entries are appended to an Excel file used by the immigration office.
 
 ## Tech Stack
-- **Backend:** Java 17, Spring Boot 3.3
-- **Templates:** Thymeleaf
-- **Styling:** Tailwind CSS (CDN)
-- **Build:** Maven Wrapper (no Maven installation required)
+
+- **Java 17**, **Spring Boot 3.3**
+- **Thymeleaf** (server-side templates)
+- **Tailwind CSS** (CDN)
+- **Apache POI** (Excel read/write)
+- **Maven Wrapper** (no Maven installation required)
 
 ## Project Structure
 
 ```
 src/main/
 ├── java/com/studyabroad/
-│   ├── Main.java                          ← entry point (@SpringBootApplication)
+│   ├── Main.java                          <- entry point (@SpringBootApplication)
 │   ├── controller/
-│   │   └── StudentFormController.java     ← handles form GET/POST requests
+│   │   └── StudentFormController.java     <- handles form GET/POST requests
 │   ├── model/
-│   │   └── AbroadStudent.java             ← Java object holding one student's data
-│   └── business/
-│       └── ExcelWriter.java               ← receives student object, writes to Excel (V2)
-└── resources/
-    └── templates/
-        └── studentform.html               ← Thymeleaf form template with Tailwind CSS
+│   │   └── AbroadCourse.java              <- Java object holding one course submission
+│   ├── business/
+│   │   └── ExcelWriter.java               <- appends course data to the Excel workbook
+│   └── db/
+│       └── abroad_course_accounting_applications.xlsx
+├── resources/
+│   ├── static/
+│   │   └── Huberlin-logo.svg
+│   └── templates/
+│       └── studentform.html               <- Thymeleaf form template with Tailwind CSS
+└── docs/
+    └── documentation.md
 ```
 
-## Run Locally
+## Running Locally
 
 ```bash
 ./mvnw spring-boot:run
 ```
 
-Then open [http://localhost:8080/courses](http://localhost:8080/courses) in your browser. No Maven installation needed.
+Open [http://localhost:8080/courses](http://localhost:8080/courses) in your browser. No Maven installation needed.
 
-Write something into the form inputs. Click submit. Check the logs in your terminal => you'll see the instance in the logs. Later on we'll insert this into excel.
+## How to Use
+
+1. Navigate to `http://localhost:8080/courses` in your browser.
+2. Fill in the course form fields:
+   - **Universitat** -- name of the university abroad
+   - **Stadt** -- city of the university
+   - **Land** -- country
+   - **Kurs-ID** -- numeric course identifier
+   - **Kursname** -- full name of the course
+   - **Erasmus-ID** -- optional Erasmus program ID
+   - **ECTS** -- number of ECTS credits
+   - **Kurs-URL** -- link to the course page
+   - **Abschluss** -- degree program (e.g. Bachelor of Science)
+3. Click **Kurs einreichen** to submit.
+4. A green success banner confirms the entry was saved. If something goes wrong, a red error banner appears.
+
+Each submission appends a new row to the Excel file at `src/main/java/com/studyabroad/db/abroad_course_accounting_applications.xlsx`.
 
 ## Application Flow
 
-### V1
-1. User opens the form in the browser
-2. `StudentFormController` serves `studentform.html`
-3. User fills in the fields and clicks Submit
-4. Controller maps the form data to a new `AbroadStudent` object
-5. Data is printed to the console for verification
+1. Student opens the form at `GET /courses`.
+2. `StudentFormController` serves `studentform.html` with an empty `AbroadCourse` model attribute.
+3. Student fills in course details and submits the form (`POST /courses`).
+4. `StudentFormController` maps the form data to an `AbroadCourse` object and passes it to `ExcelWriter`.
+5. `ExcelWriter.writeAbroadCourse()` opens the existing workbook, finds the last row, appends a new row with the course fields in column order (0-8), and writes back to the same file.
+6. The student is redirected back to `/courses` with a success or error query parameter.
 
-### V2
-Steps 1–4 stay identical. Step 5 changes:
+## Key Classes
 
-5. `StudentFormController` passes the `AbroadStudent` object to `ExcelWriter`
-6. `ExcelWriter` reads the object's fields and inserts them into an Excel file
+### `AbroadCourse` (`model/AbroadCourse.java`)
+Holds one course submission. Fields: `university`, `city`, `country`, `courseId`, `courseName`, `erasmusID`, `ects`, `courseURL`, `diplom`.
 
-The controller never writes to Excel directly — it only hands off the finished object.
+### `StudentFormController` (`controller/StudentFormController.java`)
+Handles `GET /courses` (serves the form) and `POST /courses` (passes the submitted object to `ExcelWriter`). Redirects with `?success=true` or `?error=true` query parameters.
+
+### `ExcelWriter` (`business/ExcelWriter.java`)
+Opens the existing workbook, finds the last row, appends a new row with the course fields in column order (0-8), then writes back to the same file. `writeAbroadCourse` is `synchronized` to handle concurrent submissions safely.
+
+## Excel File
+
+Located at `src/main/java/com/studyabroad/db/abroad_course_accounting_applications.xlsx`.
+
+The file is opened and appended to on every submission -- it is never recreated. This allows the immigration office to edit the file manually without losing their changes.
+
+> **TODO:** Move the file path to `application.properties` before deployment so it can be configured per environment without touching the source code.
+
+## Design Decisions
+
+- **Spring Boot + Thymeleaf** chosen as the simplest full-stack setup for a form-based web app.
+- **Apache POI** used for Excel I/O to give contributors a broad range of customizable possibilities (cell styles, formulas, etc.).
+- The controller never writes to Excel directly -- it only hands off the finished `AbroadCourse` object to `ExcelWriter`, keeping concerns separated.
