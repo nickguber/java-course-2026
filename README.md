@@ -19,7 +19,8 @@ src/main/
 │   ├── controller/
 │   │   └── StudentFormController.java     <- handles form GET/POST requests
 │   ├── model/
-│   │   └── AbroadCourse.java              <- Java object holding one course submission
+│   │   ├── Course.java                    <- parent class with shared course fields
+│   │   └── AbroadCourse.java              <- extends Course, adds study abroad-specific fields
 │   ├── business/
 │   │   └── ExcelWriter.java               <- appends course data to the Excel workbook
 │   └── db/
@@ -70,8 +71,11 @@ Each submission appends a new row to the Excel file at `src/main/java/com/studya
 
 ## Key Classes
 
+### `Course` (`model/Course.java`)
+Parent class holding the standard course fields shared by any course type: `courseName`, `ects`, `courseId`, `courseURL`, `diplom`.
+
 ### `AbroadCourse` (`model/AbroadCourse.java`)
-Holds one course submission. Fields: `university`, `city`, `country`, `courseId`, `courseName`, `erasmusID`, `ects`, `courseURL`, `diplom`.
+Extends `Course`. Adds the study abroad-specific fields: `university`, `city`, `country`, `erasmusID`, `hasErasmusId`.
 
 ### `StudentFormController` (`controller/StudentFormController.java`)
 Handles `GET /courses` (serves the form) and `POST /courses` (passes the submitted object to `ExcelWriter`). Redirects with `?success=true` or `?error=true` query parameters.
