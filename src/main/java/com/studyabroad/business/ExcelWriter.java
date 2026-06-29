@@ -4,6 +4,7 @@ import com.studyabroad.model.AbroadCourse;
 
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
+import java.io.IOException;
 
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
@@ -31,7 +32,13 @@ public class ExcelWriter {
             row.createCell(2).setCellValue(course.getCountry());
             row.createCell(3).setCellValue(course.getCourseId());
             row.createCell(4).setCellValue(course.getCourseName());
-            row.createCell(5).setCellValue(course.getErasmusID() != null ? String.valueOf(course.getErasmusID()) : "X");
+            String erasmusValue;
+            if (course.isHasErasmusId()) {
+                erasmusValue = String.valueOf(course.getErasmusID());
+            } else {
+                erasmusValue = "X";
+            }
+            row.createCell(5).setCellValue(erasmusValue);
             row.createCell(6).setCellValue(course.getEcts());
             row.createCell(7).setCellValue(course.getCourseURL());
             row.createCell(8).setCellValue(course.getDiplom());
@@ -40,8 +47,8 @@ public class ExcelWriter {
             workbook.write(fos);
             fos.close();
             workbook.close();
-        } catch (Exception e) {
-            e.printStackTrace();
+        } catch (IOException e) {
+            throw new RuntimeException("Failed to write course to Excel file", e);
         }
     }
 }
