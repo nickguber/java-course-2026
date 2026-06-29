@@ -1,18 +1,26 @@
 package com.studyabroad.model;
 
-// Will model the students abroad class etc.
-
-public class AbroadCourse {
-    private String university; 
-    private String city; 
-    private String country; 
-    private int courseId; 
-    private String courseName; 
+public class AbroadCourse extends Course {
+    private String university;
+    private String city;
+    private String country;
     private Integer erasmusID;
-    private int ects; 
-    private String courseURL; 
-    private String diplom; 
+    private boolean hasErasmusId;
 
+    public AbroadCourse() {}
+
+    public AbroadCourse(String university, String city, String country, int courseId,
+                        String courseName, Integer erasmusID, int ects, String courseURL, String diplom) {
+        setCourseName(courseName);
+        setEcts(ects);
+        setCourseId(courseId);
+        setCourseURL(courseURL);
+        setDiplom(diplom);
+        this.university = university;
+        this.city = city;
+        this.country = country;
+        setErasmusID(erasmusID);
+    }
 
     public String getUniversity() { return university; }
     public void setUniversity(String university) { this.university = university; }
@@ -23,36 +31,22 @@ public class AbroadCourse {
     public String getCountry() { return country; }
     public void setCountry(String country) { this.country = country; }
 
-    public int getCourseId() { return courseId; }
-    public void setCourseId(int courseId) { this.courseId = courseId; }
-
-    public String getCourseName() { return courseName; }
-    public void setCourseName(String courseName) { this.courseName = courseName; }
-
     public Integer getErasmusID() { return erasmusID; }
-    public void setErasmusID(Integer erasmusID) { this.erasmusID = erasmusID; }
+    public void setErasmusID(Integer erasmusID) {
+        this.erasmusID = erasmusID;
+        this.hasErasmusId = erasmusID != null;
+    }
 
-    public int getEcts() { return ects; }
-    public void setEcts(int ects) { this.ects = ects; }
-
-    public String getCourseURL() { return courseURL; }
-    public void setCourseURL(String courseURL) { this.courseURL = courseURL; }
-
-    public String getDiplom() { return diplom; }
-    public void setDiplom(String diplom) { this.diplom = diplom; }
+    public boolean isHasErasmusId() { return hasErasmusId; }
 
     @Override
     public String toString() {
         return "AbroadCourse{" +
-            "university='" + university + "'" +
+            super.toString() +
+            ", university='" + university + "'" +
             ", city='" + city + "'" +
             ", country='" + country + "'" +
-            ", courseId=" + courseId +
-            ", courseName='" + courseName + "'" +
             ", erasmusID=" + erasmusID +
-            ", ects=" + ects +
-            ", courseURL='" + courseURL + "'" +
-            ", diplom='" + diplom + "'" +
             "}";
     }
 }
