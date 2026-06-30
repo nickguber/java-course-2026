@@ -96,3 +96,33 @@ The file is opened and appended to on every submission -- it is never recreated.
 - **Spring Boot + Thymeleaf** chosen as the simplest full-stack setup for a form-based web app.
 - **Apache POI** used for Excel I/O to give contributors a broad range of customizable possibilities (cell styles, formulas, etc.).
 - The controller never writes to Excel directly -- it only hands off the finished `AbroadCourse` object to `ExcelWriter`, keeping concerns separated.
+
+## Program Flowchart
+
+```mermaid
+flowchart TD
+    classDef main fill:#dbe8f5,stroke:#4a7ab5,color:#1a1a2e
+    classDef terminal fill:#ffffff,stroke:#4a7ab5,color:#1a1a2e
+    classDef error fill:#f9d0d0,stroke:#c0392b,color:#7b0000
+
+    A([Start]) --> B[Main class starts the app]
+    B --> C[Spring Boot starts the web server]
+    C --> D[Student opens /courses]
+    D --> E[Controller returns studentform.html]
+    E --> F[/Student enters course details/]
+    F --> G[/Student submits form/]
+    G --> H[Controller receives POST request]
+    H --> I[Spring builds AbroadCourse object]
+    I --> J[ExcelWriter writes row to Excel]
+    J -->|Success| K[Redirect to /courses?success=true]
+    K --> L[Show success banner]
+    L --> M([Next entry])
+    J -->|IOException| N[Redirect to /courses?error=true]
+    N --> O[Show error banner]
+    O --> F
+
+    class A,M terminal
+    class B,C,D,E,F,G,H,I,J,K,L main
+    class N,O error
+    linkStyle 12,13,14 stroke:#c0392b,color:#c0392b
+```
