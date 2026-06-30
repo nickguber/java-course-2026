@@ -72,15 +72,19 @@ Each submission appends a new row to the Excel file at `src/main/java/com/studya
 ## Key Classes
 
 ### `Course` (`model/Course.java`)
+
 Parent class holding the standard course fields shared by any course type: `courseName`, `ects`, `courseId`, `courseURL`, `diplom`.
 
 ### `AbroadCourse` (`model/AbroadCourse.java`)
+
 Extends `Course`. Adds the study abroad-specific fields: `university`, `city`, `country`, `erasmusID`, `hasErasmusId`.
 
 ### `StudentFormController` (`controller/StudentFormController.java`)
+
 Handles `GET /courses` (serves the form) and `POST /courses` (passes the submitted object to `ExcelWriter`). Redirects with `?success=true` or `?error=true` query parameters.
 
 ### `ExcelWriter` (`business/ExcelWriter.java`)
+
 Opens the existing workbook, finds the last row, appends a new row with the course fields in column order (0-8), then writes back to the same file. `writeAbroadCourse` is `synchronized` to handle concurrent submissions safely.
 
 ## Excel File
@@ -110,7 +114,7 @@ flowchart TD
     C --> D[Student opens /courses]
     D --> E[Controller returns studentform.html]
     E --> F[/Student enters course details/]
-    F --> G[/Student submits form/]
+    F --> G[/Student submits form and form validates it/]
     G --> H[Controller receives POST request]
     H --> I[Spring builds AbroadCourse object]
     I --> J[ExcelWriter writes row to Excel]
